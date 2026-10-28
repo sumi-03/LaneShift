@@ -7,3 +7,9 @@ ip link set mgmt0 up
 ip link show veth-ext >/dev/null 2>&1 || ip link add veth-ext type veth peer name veth-neu
 ip link set veth-ext up
 ip link set veth-neu up
+# 외부망 게이트웨이 = 호스트 (floating IP로 가는 길)
+ip addr replace 172.16.0.1/24 dev veth-ext
+# VM → 인터넷: 중계 허용 + 무선랜 IP로 바꿔 내보내기 (규칙이 없을 때만 추가)
+sysctl -w net.ipv4.ip_forward=1
+iptables -t nat -C POSTROUTING -s 172.16.0.0/24 -o wlxb0386cf0123d -j MASQUERADE 2>/dev/null \
+  || iptables -t nat -A POSTROUTING -s 172.16.0.0/24 -o wlxb0386cf0123d -j MASQUERADE
