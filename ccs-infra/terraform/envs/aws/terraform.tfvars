@@ -14,3 +14,6 @@ segments = {
 
 # NAT는 11/5 EKS부터 필요. 시간당 과금
 enable_nat = false
+
+# RDS는 11/12 sea 셀 배포부터 상시 필요. 시간당 과금
+enable_rds = false
