@@ -1,1 +1,7 @@
 passwords.yml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
