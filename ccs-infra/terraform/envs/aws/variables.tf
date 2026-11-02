@@ -1,4 +1,4 @@
 variable "github_repo" {
-  description = "OIDC로 AWS에 접근을 허용할 저장소 (owner/name)"
+  description = "OIDC 토큰 sub의 저장소 부분 (owner@ownerId/repo@repoId)"
   type        = string
 }
