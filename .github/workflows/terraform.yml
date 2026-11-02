@@ -1,0 +1,61 @@
+name: terraform
+
+# 언제 실행하나: Terraform 코드나 이 파일이 바뀐 PR, main에 push될 때
+on:
+  pull_request:
+    paths:
+      - "ccs-infra/terraform/**"
+      - ".github/workflows/terraform.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ccs-infra/terraform/**"
+
+permissions:
+  contents: read
+
+env:
+  TF_VERSION: 1.15.8
+  TF_ROOT: ccs-infra/terraform
+
+jobs:
+  # 1단계: 형식·문법 검사 (AWS 접속 없음)
+  fmt-validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [pvt, aws]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - name: fmt
+        run: terraform fmt -check -recursive -diff ${{ env.TF_ROOT }}
+      - name: validate
+        working-directory: ${{ env.TF_ROOT }}/envs/${{ matrix.env }}
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
+
+  # 2단계: AWS plan (1단계 통과 시에만, OIDC로 읽기 전용 접속)
+  aws-plan:
+    needs: fmt-validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: ${{ env.TF_ROOT }}/envs/aws
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          aws-region: ap-northeast-2
+      - run: terraform init -input=false
+      - run: terraform plan -input=false -lock=false -no-color
