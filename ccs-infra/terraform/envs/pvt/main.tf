@@ -1,7 +1,7 @@
 module "network" {
   source = "../../modules/os-network"
 
-  name_prefix = var.name_prefix
+  name_prefix           = var.name_prefix
   external_network_name = var.external_network_name
   dns_nameservers       = var.dns_nameservers
   segments              = var.segments
