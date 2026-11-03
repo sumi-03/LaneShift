@@ -32,3 +32,26 @@ variable "enable_rds" {
   type        = bool
   default     = false
 }
+
+variable "enable_vpn" {
+  description = "Site-to-Site VPN 연결. 시간당 과금이라 필요할 때만 켬"
+  type        = bool
+  default     = false
+}
+
+variable "classroom_public_ip" {
+  description = "강의실 공인 IP. 공개 저장소라 secret.auto.tfvars(로컬)·GitHub Secret(CI)으로 넣음"
+  type        = string
+  sensitive   = true
+}
+
+variable "pvt_vpn_cidrs" {
+  description = "VPN으로 AWS에 알려 줄 프라이빗 대역 (차량접속 제외)"
+  type        = list(string)
+}
+
+variable "enable_vpn_test" {
+  description = "VPN 확인용 테스트 EC2"
+  type        = bool
+  default     = false
+}
