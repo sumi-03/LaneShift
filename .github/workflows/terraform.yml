@@ -59,3 +59,6 @@ jobs:
           aws-region: ap-northeast-2
       - run: terraform init -input=false
       - run: terraform plan -input=false -lock=false -no-color
+        env:
+          # 공인 IP는 저장소에 두지 않고 GitHub Secret으로 넣음
+          TF_VAR_classroom_public_ip: ${{ secrets.CLASSROOM_PUBLIC_IP }}
