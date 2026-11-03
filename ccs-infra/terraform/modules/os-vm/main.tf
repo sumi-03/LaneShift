@@ -21,6 +21,14 @@ resource "openstack_networking_port_v2" "this" {
   fixed_ip {
     subnet_id = var.networks[count.index].subnet_id
   }
+
+  # 첫 번째 포트에만: 자기 IP가 아닌 대역도 통과 (VPN VM처럼 남의 패킷을 전달하는 VM용)
+  dynamic "allowed_address_pairs" {
+    for_each = count.index == 0 ? var.allowed_address_pairs : []
+    content {
+      ip_address = allowed_address_pairs.value
+    }
+  }
 }
 
 resource "openstack_compute_instance_v2" "this" {

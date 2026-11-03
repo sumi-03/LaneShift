@@ -17,3 +17,12 @@ enable_nat = false
 
 # RDS는 11/12 sea 셀 배포부터 상시 필요. 시간당 과금
 enable_rds = false
+
+# Site-to-Site VPN (11/3). 시간당 과금
+enable_vpn = true
+
+# 프라이빗 서비스 · 데이터 · 관리 구간만 (차량접속 10.10.0.0/24 제외)
+pvt_vpn_cidrs = ["10.10.16.0/20", "10.10.48.0/24", "10.10.56.0/24"]
+
+# VPN 확인용 테스트 EC2 (11/3). 확인 후 false
+enable_vpn_test = false

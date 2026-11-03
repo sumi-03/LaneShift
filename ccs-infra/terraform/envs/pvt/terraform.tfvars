@@ -11,3 +11,7 @@ segments = {
   data    = { cidr = "10.10.48.0/24" }
   mgmt    = { cidr = "10.10.56.0/24" }
 }
+
+# Site-to-Site VPN (11/3)
+aws_vpc_cidr    = "10.20.0.0/16"
+vpn_local_cidrs = ["10.10.16.0/20", "10.10.48.0/24", "10.10.56.0/24"]

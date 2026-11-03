@@ -37,3 +37,9 @@ variable "user_data" {
   type    = string
   default = null
 }
+
+variable "allowed_address_pairs" {
+  description = "첫 번째 포트에서 자기 IP가 아니어도 통과시킬 대역 (라우터 역할 VM용)"
+  type        = list(string)
+  default     = []
+}

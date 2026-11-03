@@ -27,3 +27,12 @@ variable "image_name" {
 variable "key_pair" {
   type = string
 }
+
+variable "aws_vpc_cidr" {
+  type = string
+}
+
+variable "vpn_local_cidrs" {
+  description = "VPN으로 AWS와 통할 프라이빗 대역 (차량접속 제외)"
+  type        = list(string)
+}
