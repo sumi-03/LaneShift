@@ -16,15 +16,15 @@ resource "openstack_networking_port_v2" "this" {
   count              = length(var.networks)
   name               = "${var.name}-port${count.index}"
   network_id         = var.networks[count.index].network_id
-  security_group_ids = var.security_group_ids
+  security_group_ids = var.networks[count.index].security_group_ids != null ? var.networks[count.index].security_group_ids : var.security_group_ids
 
   fixed_ip {
     subnet_id = var.networks[count.index].subnet_id
   }
 
-  # 첫 번째 포트에만: 자기 IP가 아닌 대역도 통과 (VPN VM처럼 남의 패킷을 전달하는 VM용)
+  # 자기 IP가 아닌 대역도 통과: 첫 번째 포트는 공통 변수(VPN VM 등), 그 외는 포트별 지정(MetalLB 등)
   dynamic "allowed_address_pairs" {
-    for_each = count.index == 0 ? var.allowed_address_pairs : []
+    for_each = concat(count.index == 0 ? var.allowed_address_pairs : [], var.networks[count.index].allowed_address_pairs)
     content {
       ip_address = allowed_address_pairs.value
     }
