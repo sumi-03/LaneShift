@@ -55,3 +55,24 @@ variable "enable_vpn_test" {
   type        = bool
   default     = false
 }
+
+variable "enable_eks" {
+  description = "sea EKS 클러스터. 시간당 과금이라 필요할 때만 켬"
+  type        = bool
+  default     = false
+}
+
+variable "eks_api_allowed_cidrs" {
+  description = "EKS API(443)에 VPN으로 접속할 강의실 대역"
+  type        = list(string)
+}
+
+variable "eks_node_instance_types" {
+  type    = list(string)
+  default = ["t3.medium"]
+}
+
+variable "eks_node_desired" {
+  type    = number
+  default = 2
+}
