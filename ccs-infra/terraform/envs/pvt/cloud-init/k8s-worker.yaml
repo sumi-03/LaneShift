@@ -1,0 +1,15 @@
+#cloud-config
+write_files:
+  - path: /etc/netplan/60-vehicle.yaml
+    permissions: "0600"
+    content: |
+      network:
+        version: 2
+        ethernets:
+          ens4:
+            dhcp4: true
+            dhcp4-overrides:
+              use-routes: false
+              use-dns: false
+runcmd:
+  - netplan apply

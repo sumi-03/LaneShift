@@ -13,3 +13,11 @@ output "rds_endpoint" {
 output "vpn_test_private_ip" {
   value = try(aws_instance.vpn_test[0].private_ip, null)
 }
+
+output "eks_cluster_name" {
+  value = try(module.eks[0].cluster_name, null)
+}
+
+output "eks_endpoint" {
+  value = try(module.eks[0].cluster_endpoint, null)
+}

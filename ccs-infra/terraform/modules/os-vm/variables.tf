@@ -17,8 +17,10 @@ variable "key_pair" {
 variable "networks" {
   description = "붙일 망 목록. 첫 번째가 기본 NIC이고 floating IP도 여기에 붙는다"
   type = list(object({
-    network_id = string
-    subnet_id  = string
+    network_id            = string
+    subnet_id             = string
+    security_group_ids    = optional(list(string))     # 없으면 공통 security_group_ids 사용
+    allowed_address_pairs = optional(list(string), []) # 이 포트에서만 통과시킬 대역
   }))
 }
 

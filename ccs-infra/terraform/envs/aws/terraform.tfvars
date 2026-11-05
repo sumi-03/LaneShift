@@ -12,7 +12,7 @@ segments = {
   mgmt    = { cidrs = ["10.20.56.0/24", "10.20.57.0/24"], tier = "private" }
 }
 
-# NAT는 11/5 EKS부터 필요. 시간당 과금
+# NAT는 EKS 노드가 이미지를 받는 데 필요 (11/4부터). 시간당 과금
 enable_nat = false
 
 # RDS는 11/12 sea 셀 배포부터 상시 필요. 시간당 과금
@@ -26,3 +26,7 @@ pvt_vpn_cidrs = ["10.10.16.0/20", "10.10.48.0/24", "10.10.56.0/24"]
 
 # VPN 확인용 테스트 EC2 (11/3). 확인 후 false
 enable_vpn_test = false
+
+# EKS (11/4). 시간당 과금
+enable_eks            = false
+eks_api_allowed_cidrs = ["10.10.16.0/20", "10.10.56.0/24"] # k8s-pvt 노드, 관리 VM
